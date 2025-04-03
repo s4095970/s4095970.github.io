@@ -1,0 +1,79 @@
+body {
+  color: black;
+  font-family: "Space Grotesk", sans-serif;
+}
+h1 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  width: 400px;
+  background-color: rgb(244, 255, 185);
+  color: #3c2a21;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 200px;
+  border-radius: 25px;
+  padding: 10px;
+  border: 5px solid gray;
+  text-align: center;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+p {
+  background-color: rgb(197, 255, 197);
+  color: #3c2a21;
+  padding: 10px 10px 10px 10px;
+  width: 500px;
+  height: 200px;
+  border-radius: 25px;
+  border: 5px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ul {
+  background-color: rgb(197, 255, 197);
+  color: #3c2a21;
+  padding: 10px 10px 10px 30px;
+  width: 500px;
+  height: 250px;
+  border-radius: 25px;
+  border: 5px solid gray;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.listq {
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box {
+  max-width: 1000px;
+  border: 2px solid black;
+  min-height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 50px;
+  margin: auto;
+}
