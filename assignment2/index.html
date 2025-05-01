@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>DJ Mixer - Liam Gillies</title>
     <link rel="stylesheet" href="reset.css" />
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
@@ -18,93 +18,166 @@
         <source src="djmix.mp3" type="audio/mp3" />
       </video>
     </div>
-    <h2>MAKE SOME <span style="color: turquoise;">MUSIC</span></h2>
+    <h2>MAKE SOME <span style="color: turquoise">MUSIC</span></h2>
     <!-- Main Content Section -->
-     <div id="audio-gif"><img src="https://media2.giphy.com/media/FuIERg8ovKp9aXjIcN/giphy.gif?cid=6c09b952xanp8bonsyhqxb85zejj6t23lc6ws5pmw6sg77g5&ep=v1_stickers_search&rid=giphy.gif&ct=s" alt="audio visualisation">
-     </div>
+    <div id="audio-gif">
+      <img
+        src="https://media2.giphy.com/media/FuIERg8ovKp9aXjIcN/giphy.gif?cid=6c09b952xanp8bonsyhqxb85zejj6t23lc6ws5pmw6sg77g5&ep=v1_stickers_search&rid=giphy.gif&ct=s"
+        alt="audio visualisation"
+      />
+    </div>
     <main class="container">
-      <!-- Media Player Section -->
-
-
       <div class="current-time-display">
         <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
       </div>
-        
-          <div class="progress-bar">
-            <span id="progress-bar-fill"></span>
-          </div>
 
-          <!-- Key mp3 player controls -->
-           <div class="main-controls">
-          <button id="mute-button" class="main-buttons" onclick="toggleMute()">
-            <img
-              id="mute-img"
-              class="button-img"
-              src="https://img.icons8.com/ios-glyphs/30/high-volume--v2.png"
-              alt="Mute Button"
-            />
+      <div class="progress-bar">
+        <span id="progress-bar-fill"></span>
+      </div>
+
+      <!-- Key mp3 player controls -->
+      <div class="main-controls">
+        <button id="mute-button" class="main-buttons" onclick="toggleMute()">
+          <img
+            id="mute-img"
+            class="button-img"
+            src="https://img.icons8.com/ios-glyphs/30/high-volume--v2.png"
+            alt="Mute Button"
+          />
+        </button>
+        <button
+          id="play-pause-btn"
+          class="main-buttons"
+          onclick="togglePlayPause()"
+        >
+          <img
+            id="play-pause-img"
+            class="button-img"
+            src="https://img.icons8.com/ios-glyphs/30/play--v1.png"
+            alt="Play Button"
+          />
+        </button>
+        <button id="loop-button" class="main-buttons" onclick="toggleLoop()">
+          <img
+            id="loop-img"
+            class="button-img"
+            src="https://img.icons8.com/ios-glyphs/30/repeat.png"
+            alt="Loop Button"
+          />
+        </button>
+      </div>
+
+      <!-- dj controls -->
+      <div class="dj-controls">
+        <!-- buttons for controlling the playback speed -->
+        <div class="speed-button-row">
+          <button
+            id="half-speed-button"
+            class="dj-buttons"
+            onclick="toggle50Speed()"
+          >
+            0.5x
           </button>
-          <button id="play-pause-btn" class="main-buttons" onclick="togglePlayPause()">
-            <img
-              id="play-pause-img"
-              class="button-img"
-              src="https://img.icons8.com/ios-glyphs/30/play--v1.png"
-              alt="Play Button"
-            />
+          <button
+            id="default-speed-button"
+            class="dj-buttons"
+            onclick="toggle100Speed()"
+          >
+            1x
           </button>
-          <button id="loop-button" class="main-buttons" onclick="toggleLoop()">
-            <img
-              id="loop-img"
-              class="button-img"
-              src="https://img.icons8.com/ios-glyphs/30/repeat.png"
-              alt="Loop Button"
-            />
+          <button
+            id="faster-speed-button"
+            class="dj-buttons"
+            onclick="toggle150Speed()"
+          >
+            1.5x
+          </button>
+          <button
+            id="fastest-speed-button"
+            class="dj-buttons"
+            onclick="toggle200Speed()"
+          >
+            2x
           </button>
         </div>
 
-        <div class="dj-controls">
-          <div class="speed-button-row">
-          <button id="half-speed-button" class="dj-buttons" onclick="toggle50Speed()"> 0.5x</button>
-          <button id="default-speed-button" class="dj-buttons" onclick="toggle100Speed()"> 1x</button>
-          <button id="faster-speed-button" class="dj-buttons" onclick="toggle150Speed()">1.5x</button>
-          <button id="fastest-speed-button" class="dj-buttons" onclick="toggle200Speed()">2x</button>
-          </div>
-          <div class="playback-speed-control">
-            <label for="speed-slider">Playback Speed:</label>
-            <input
-              id="speed-slider"
-              type="range"
-              min="0.5"
-              max="2"
-              step="0.1"
-              value="1"
-            />
-            <span id="speed-display">1x</span>
-          </div>
-          <div class = "chapter-button-row">
-            <button id="jump-back-btn" class="dj-buttons" onclick="jumpBack()">-10s</button> 
-            <button id="first-chapter-btn" class="dj-buttons" onclick="chapter1()">1</button>
-            <button id="second-chapter-btn" class="dj-buttons" onclick="chapter2()">2</button>
-            <button id="third-chapter-btn" class="dj-buttons" onclick="chapter3()">3</button>
-            <button id="fourth-chapter-btn" class="dj-buttons" onclick="chapter4()">4</button>
-            <button id="fifth-chapter-btn" class="dj-buttons" onclick="chapter5()">5</button>
-            <button id="jump-foward-btn" class="dj-buttons" onclick="jumpForward()">+10s</button> 
-          </div>
-          <div class="volume-control">
-            <label for="volume-slider">Volume:</label>
-            <input
-              id="volume-slider"
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value="1"
-            />
-            <span id="volume-display">100%</span>
-          </div>
+        <!-- playback speed slider for more control -->
+        <div class="playback-speed-control">
+          <label for="speed-slider">Playback Speed:</label>
+          <input
+            id="speed-slider"
+            type="range"
+            min="0.5"
+            max="2"
+            step="0.1"
+            value="1"
+          />
+          <span id="speed-display">1x</span>
         </div>
+
+        <!-- buttons for jumping to different sections of the sound track -->
+        <div class="chapter-button-row">
+          <button id="jump-back-btn" class="dj-buttons" onclick="jumpBack()">
+            -10s
+          </button>
+          <button
+            id="first-chapter-btn"
+            class="dj-buttons"
+            onclick="chapter1()"
+          >
+            1
+          </button>
+          <button
+            id="second-chapter-btn"
+            class="dj-buttons"
+            onclick="chapter2()"
+          >
+            2
+          </button>
+          <button
+            id="third-chapter-btn"
+            class="dj-buttons"
+            onclick="chapter3()"
+          >
+            3
+          </button>
+          <button
+            id="fourth-chapter-btn"
+            class="dj-buttons"
+            onclick="chapter4()"
+          >
+            4
+          </button>
+          <button
+            id="fifth-chapter-btn"
+            class="dj-buttons"
+            onclick="chapter5()"
+          >
+            5
+          </button>
+          <button
+            id="jump-foward-btn"
+            class="dj-buttons"
+            onclick="jumpForward()"
+          >
+            +10s
+          </button>
         </div>
-        <footer>Icons by <a href="https://icons8.com/"> Icons8</a></footer>
+        <!-- vlume slider  -->
+        <div class="volume-control">
+          <label for="volume-slider">Volume:</label>
+          <input
+            id="volume-slider"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="1"
+          />
+          <span id="volume-display">100%</span>
+        </div>
+      </div>
+      <footer>Icons by <a href="https://icons8.com/">Icons8</a></footer>
     </main>
   </body>
 </html>

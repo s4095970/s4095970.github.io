@@ -75,10 +75,10 @@ function toggleMute() {
 function toggleLoop() {
   if (audio.loop) {
     audio.loop = false;
-    loopButton.style.backgroundColor = ""; // Reset to default background
+    loopButton.style.backgroundColor = ""; // Reset to default button colour
   } else {
     audio.loop = true;
-    loopButton.style.backgroundColor = "cyan";
+    loopButton.style.backgroundColor = "green";
   }
 }
 
@@ -96,7 +96,7 @@ function toggle50Speed() {
   } else {
     audio.playbackRate = 1;
     halfSpeed.style.backgroundColor = "";
-    defaultSpeed.style.backgroundColor = "cyan"; // Changed from lime to cyan
+    defaultSpeed.style.backgroundColor = "cyan"; 
     speedSlider.value = 1;
     speedDisplay.textContent = "1x";
   }
@@ -105,7 +105,7 @@ function toggle50Speed() {
 function toggle150Speed() {
   if (audio.playbackRate !== 1.5) {
     audio.playbackRate = 1.5;
-    fasterSpeed.style.backgroundColor = "cyan"; // Changed from lime to cyan
+    fasterSpeed.style.backgroundColor = "cyan";
     halfSpeed.style.backgroundColor = "white";
     fastestSpeed.style.backgroundColor = "white";
     defaultSpeed.style.backgroundColor = "white";
@@ -114,7 +114,7 @@ function toggle150Speed() {
   } else {
     audio.playbackRate = 1;
     fasterSpeed.style.backgroundColor = "";
-    defaultSpeed.style.backgroundColor = "cyan"; // Changed from lime to cyan
+    defaultSpeed.style.backgroundColor = "cyan"; 
     speedSlider.value = 1;
     speedDisplay.textContent = "1x";
   }
@@ -126,13 +126,13 @@ function toggle200Speed() {
     fasterSpeed.style.backgroundColor = "white";
     halfSpeed.style.backgroundColor = "white";
     defaultSpeed.style.backgroundColor = "white";
-    fastestSpeed.style.backgroundColor = "cyan"; // Changed from lime to cyan
+    fastestSpeed.style.backgroundColor = "cyan"; 
     speedSlider.value = 2;
     speedDisplay.textContent = "2x";
   } else {
     audio.playbackRate = 1;
     fastestSpeed.style.backgroundColor = "";
-    defaultSpeed.style.backgroundColor = "cyan"; // Changed from lime to cyan
+    defaultSpeed.style.backgroundColor = "cyan"; 
     speedSlider.value = 1;
     speedDisplay.textContent = "1x";
   }
@@ -141,7 +141,7 @@ function toggle200Speed() {
 function toggle100Speed() {
   if (audio.playbackRate !== 1) {
     audio.playbackRate = 1;
-    defaultSpeed.style.backgroundColor = "cyan"; // Changed from lime to cyan
+    defaultSpeed.style.backgroundColor = "cyan"; 
     fasterSpeed.style.backgroundColor = "white";
     halfSpeed.style.backgroundColor = "white";
     fastestSpeed.style.backgroundColor = "white";
@@ -154,7 +154,7 @@ speedSlider.addEventListener("input", () => {
   const speed = speedSlider.value;
   audio.playbackRate = speed;
   speedDisplay.textContent = `${speed}x`;
-  // remove any highlights on previous selected playback speed buttons
+  // remove button highlight when slider is moved
   defaultSpeed.style.backgroundColor = "white";
   fasterSpeed.style.backgroundColor = "white";
   halfSpeed.style.backgroundColor = "white";
