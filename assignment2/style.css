@@ -1,5 +1,5 @@
 :root {
-  --primary-bg-color: #f4f4f4;
+  --primary-bg-color: #212121;
   --text-color: #333;
   --main-bg-color: #333;
   --main-text-color: #fff;
@@ -19,19 +19,27 @@ body {
   background-color: var(--primary-bg-color);
   color: var(--text-color);
   line-height: 1.6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
 }
 
-/* Add additional styles as needed */
-
+h2 {
+  color: white;
+  text-align: center;
+  font-size: 3rem;
+}
 /* Create a container for the main content */
 .container {
   max-width: 1000px;
   width: 100%;
   padding: 10px;
+  margin: 0 auto;
+}
+
+#media-player {
+  margin: 0;
+}
+
+#custom-audio-player {
+  display: none;
 }
 
 /* Header styling */
@@ -43,61 +51,28 @@ header {
   width: 100%;
 }
 
-/* Navigation styling */
-nav {
-  margin-top: 20px;
-  text-align: center;
-}
-
-nav ul {
-  list-style: none;
+#audio-gif {
+  filter: grayscale();
   display: flex;
   justify-content: center;
-}
-
-nav ul li {
-  margin-right: 20px;
-}
-
-nav a {
-  text-decoration: none;
-  color: var(--text-color);
-}
-
-/* Media player styling */
-.media-player {
   width: 100%;
-  margin: 0 auto;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  margin: 0px;
+  max-height: 100px;
 }
 
-.media-player video {
-  max-width: 100%;
-}
-
-.custom-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
+.current-time-display {
+  text-align: center;
   margin-top: 10px;
-  width: 100%;
-}
-
-.custom-controls button {
-  background-color: var(--main-btn-bg-color);
-  color: var(--main-text-color);
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
   font-size: 16px;
-  display: flex;
-  align-items: center;
+  color: white;
 }
 
 .progress-bar {
   width: 100%;
-  height: 10px;
-  background-color: #ddd;
+  height: 30px;
+  background-color: #767676;
   margin-top: 10px;
   overflow: hidden;
 }
@@ -105,16 +80,151 @@ nav a {
 .progress-bar span {
   display: block;
   height: 100%;
-  background-color: var(--main-bg-color);
+  background-color: cyan; /* Changed from lime to cyan */
   width: 0;
   transition: width 0.3s ease;
 }
 
-/* Footer styling */
-footer {
-  background-color: var(--main-bg-color);
-  color: var(--main-text-color);
+.main-controls {
+  display: flex;
+  justify-content: center;
+}
+
+/* Create base visual for each of the main buttons */
+.main-buttons {
+  padding: 10px;
+  margin: 20px;
+  border-radius: 50%;
+  background-color: var(--primary-bg-color);
+  border-style: solid;
+  border-color: rgb(255, 255, 255);
+  border-width: 1px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dj-controls {
+  border: solid 5px white;
+  padding: 10px;
+}
+
+.speed-button-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chapter-button-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* base styling for the dj buttons */
+.dj-buttons {
+  margin: 20px;
+  padding: 0px;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  transition: ease-in-out 0.5s;
+  border-radius: 50%;
+  border: solid cyan 4px; /* Changed from lime to cyan */
+  color: black;
+  cursor: pointer;
+}
+
+.dj-buttons {
+  width: 60px; /* Set a fixed width */
+  height: 60px; /* Set a fixed height */
+  display: flex; /* Use flexbox to center the content */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  padding: 0; /* Remove extra padding */
+  margin: 10px; /* Add consistent spacing */
+  border-radius: 50%; /* Keep buttons circular */
+  background-color: #ffffff; /* Keep the background consistent */
+  border: solid cyan 4px; /* Ensure consistent border */
+  cursor: pointer;
+}
+
+.playback-speed-control {
   text-align: center;
-  padding: 10px 0;
-  width: 100%;
+  margin-top: 20px;
+  color: rgb(255, 255, 255);
+}
+
+#speed-slider {
+  width: 50%;
+  margin: 10px auto;
+  display: block;
+  height: 10px;
+  background-color: #818181;
+  border-radius: 3px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+#default-speed-button {
+  background-color: cyan;
+}
+.volume-control {
+  text-align: center;
+  margin-top: 20px;
+  color: rgb(255, 255, 255);
+}
+
+#volume-slider {
+  width: 50%;
+  margin: 10px auto;
+  display: block;
+  height: 10px; /* Match the height of the playback speed slider */
+  background-color: #818181; /* Match the background color */
+  border-radius: 3px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px; /* Match the thumb size */
+  height: 20px;
+  background-color: cyan; /* Match the thumb color */
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#volume-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: cyan;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#volume-slider::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: cyan;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Invert the icons to white instead of black */
+#mute-img {
+  filter: invert();
+}
+
+#loop-img {
+  filter: invert();
+}
+
+#play-pause-img {
+  filter: invert();
+}
+
+footer {
+  color: white;
 }
