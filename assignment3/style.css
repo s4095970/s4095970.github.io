@@ -1,0 +1,46 @@
+body {
+  background-image: linear-gradient(rgb(124, 203, 203), rgb(45, 65, 121));
+  cursor: url("fish.png"), auto;
+}
+
+.end-screen {
+  opacity: 100;
+  background-color: red;
+  width: 2000px;
+  height: 2000px;
+}
+
+h1 {
+  display: flex;
+  align-content: center;
+  flex-direction: row;
+}
+
+.obstacle {
+  background-color: red;
+  margin: 20px;
+  width: 100px;
+  height: 100px;
+  animation: rotateObstacle 2s linear infinite;
+}
+
+.obstacle-move {
+  animation: moveObstacle 2s linear infinite;
+}
+@keyframes rotateObstacle {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes moveObstacle {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(500px);
+  }
+}
