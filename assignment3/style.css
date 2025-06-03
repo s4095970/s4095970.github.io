@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  background-image: linear-gradient(rgb(60, 128, 164), rgb(31, 61, 144));
+  background-image: linear-gradient(rgb(92, 161, 198), rgb(19, 38, 91));
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -57,6 +57,7 @@ body {
   flex: 1;
 }
 
+/* Start button is deliberately placed at the bottom of the menu to control where the user's cursor is located when the game starts */
 #reset-button {
   padding: 10px;
   border-radius: 10px;
@@ -83,7 +84,7 @@ I used a dark blue background for the darkness to still imply the underwater set
   z-index: 5;
   background: radial-gradient(
     circle 200px at var(--x, 50vw) var(--y, 50vh),
-    transparent 0 170px,
+    transparent 0 10vw,
     rgb(17, 0, 56) 200px 100vw
   );
 }
@@ -331,7 +332,7 @@ from-to keyframes were enough as the obstacles only moved between 2 locations*/
     transform: translateX(0px);
   }
   to {
-    transform: translateX(40vw);
+    transform: translateX(50vw);
   }
 }
 
