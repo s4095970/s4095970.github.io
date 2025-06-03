@@ -7,14 +7,67 @@
     <link rel="stylesheet" href="reset.css" />
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Quicksand"
+    />
   </head>
+
   <body>
-    <div class="end-screen">
-      <h1></h1>
+    <img id="fish-cursor" src="fish.png" />
+    <!-- Menu / game over sceen -->
+    <div class="menu">
+      <h1 class="menu-text" id="heading-text">Ocean Scavenger</h1>
+      <h3 class="menu-text" id="tutorial-text">
+        How to Play: Navigate the deep sea and collect food, but be careful!<br />
+        Find all 6 food to win.
+      </h3>
+      <h2 class="menu-text" id="score-text"></h2>
+      <div class="menu-buttons">
+        <button id="reset-button" onclick="reset()">Start Game</button>
+      </div>
     </div>
-    <p></p>
-    <div class="obstacle-move">
-      <div class="obstacle"></div>
+
+    <!-- Game content -->
+    <div class="mask"></div>
+    <div class="game">
+      <div class="obstacle" id="border-left"></div>
+      <div class="obstacle" id="border-top"></div>
+      <div class="obstacle" id="border-right"></div>
+      <div class="obstacle" id="border-bottom"></div>
+      <div class="obstacle" id="moving-square">
+        <div class="obstacle" id="obstacle-rotate"></div>
+      </div>
+      <div class="obstacle-flex">
+        <div id="rectangle-right" class="obstacle"></div>
+      </div>
+      <div id="rectangle-left" class="obstacle"></div>
+      <div class="rectangle-center-container">
+        <div id="rectangle-centre" class="obstacle"></div>
+      </div>
+      <div class="obstacle" id="circle-obstacle"></div>
+      <div class="obstacle" id="circle-obstacle2"></div>
+      <div class="obstacle" id="circle-obstacle3"></div>
+      <div class="obstacle" id="circle-obstacle4"></div>
+      <div class="obstacle" id="moving-wall"></div>
+      <div class="obstacle" id="rotating-obstacle-left"></div>
+      <div class="obstacle" id="rotating-obstacle-right"></div>
+      <div class="obstacle" id="rotating-obstacle-top"></div>
+
+      <div class="mine-stem" id="stem1"></div>
+      <div class="mine-stem" id="stem2"></div>
+      <div class="mine-stem" id="stem3"></div>
+      <div class="mine-stem" id="stem4"></div>
+
+      <div class="food" id="food1"></div>
+      <div class="food" id="food2"></div>
+      <div class="food" id="food3"></div>
+      <div class="food" id="food4"></div>
+      <div class="food" id="food5"></div>
+      <div class="food" id="food6"></div>
     </div>
   </body>
 </html>
+
+<!-- CODE REFLECTION -->
+<!--  -->

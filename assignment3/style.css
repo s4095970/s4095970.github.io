@@ -1,32 +1,322 @@
+html {
+  cursor: AUTO;
+  font-family: "Quicksand", serif;
+}
+
 body {
-  background-image: linear-gradient(rgb(124, 203, 203), rgb(45, 65, 121));
-  cursor: url("fish.png"), auto;
+  background-image: linear-gradient(rgb(60, 128, 164), rgb(31, 61, 144));
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
-.end-screen {
-  opacity: 100;
-  background-color: red;
-  width: 2000px;
-  height: 2000px;
+/* Set the size and properties of the fish image that follows the cursor */
+#fish-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: auto;
+  pointer-events: none;
+  z-index: 2;
 }
 
-h1 {
+/* I kept the menu simple to instead focus on the interaction design of the game. It includes a title, tutorial, and score update. */
+.menu {
+  position: absolute;
+  background-color: rgb(53, 48, 107);
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  z-index: 10;
+}
+
+.menu-text {
+  padding: 2%;
+  text-align: center;
+  font-size: 5rem;
+}
+
+#score-text {
+  font-size: 3rem;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+}
+#tutorial-text {
+  font-size: 2rem;
+}
+.menu-buttons {
   display: flex;
-  align-content: center;
-  flex-direction: row;
+  flex-direction: column;
+  flex: 1;
 }
 
+#reset-button {
+  padding: 10px;
+  border-radius: 10px;
+  border: solid white 4px;
+  background-color: #444;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  max-width: 500px;
+  margin: 0;
+  font-size: 5rem;
+}
+
+/* Creates the visuals for the masking effect. A gradient transparency achieved the torch affect.
+I used a dark blue background for the darkness to still imply the underwater setting */
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(
+    circle 200px at var(--x, 50vw) var(--y, 50vh),
+    transparent 0 170px,
+    rgb(17, 0, 56) 200px 100vw
+  );
+}
+
+/* Properties and colour of obstacles. I used red to make it clear that the user should avoid them. */
 .obstacle {
-  background-color: red;
-  margin: 20px;
+  position: absolute;
+  background-color: crimson;
+  z-index: 1;
+}
+/* For each obstacle I positioned them according to the viewport so that the game can work in multiple window sizes
+This method mostly worked as long as the aspect ratio was kept somewhat similar. */
+
+/* My method of creating and placing each obstacle individually worked but was tedious, 
+so a larger finished version of this game prototype would be challenging and ineffective to make */
+
+/* I made visuals for some obstacles myself to avoid repetitive red shapes.
+  The images gave context and detail to the scene although would need to be more refined in a finished product */
+
+/* The plastic bag animation and size */
+#obstacle-rotate {
+  background-color: transparent;
+  background-image: url("plastic-bag.png");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: rotateObstacle 4s ease-in-out infinite;
   width: 100px;
   height: 100px;
-  animation: rotateObstacle 2s linear infinite;
+  top: 50%;
+  left: 0;
 }
 
-.obstacle-move {
-  animation: moveObstacle 2s linear infinite;
+/* Plastic bag movement. I needed to make this a separate div 
+so the rotation wouldn't affect the direction of the translate.
+I chose a plastic bag as an obstacle to connect to human pollution making the ocean dangerous */
+#moving-square {
+  animation: moveObstacle 4s ease-in-out infinite alternate;
+  top: 15%;
+  left: 50%;
 }
+
+#rectangle-left,
+#rectangle-right,
+#rectangle-centre {
+  width: 40%;
+  height: 10%;
+  border-radius: 10px;
+}
+#rectangle-left {
+  top: 20%;
+}
+#rectangle-right {
+  top: 30%;
+}
+.rectangle-center-container {
+  display: flex;
+  justify-content: center;
+}
+#rectangle-centre {
+  display: flex;
+  top: 55%;
+}
+.obstacle-flex {
+  display: flex;
+  justify-content: end;
+}
+
+/* Sea mine size and position */
+#circle-obstacle {
+  top: 50%;
+  left: 5%;
+}
+#circle-obstacle2 {
+  top: 50%;
+  left: 15%;
+}
+#circle-obstacle3 {
+  top: 50%;
+  right: 15%;
+}
+#circle-obstacle4 {
+  top: 50%;
+  right: 5%;
+}
+/* Attached the mine image to each circle */
+#circle-obstacle,
+#circle-obstacle2,
+#circle-obstacle3,
+#circle-obstacle4 {
+  width: 8vw;
+  height: 8vw;
+  border-radius: 50%;
+  background-color: transparent;
+  background-image: url("mine-obstacle.png");
+  background-size: 90%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Moving jellyfish. The movement is simple, translating up and down with an ease effect */
+#moving-wall {
+  background-color: transparent;
+  background-image: url("jellyfish.png");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  top: 45%;
+  left: 30%;
+  width: 4%;
+  height: 15%;
+  animation: slideUp 2s ease-in-out infinite alternate;
+}
+
+/* Spinning obstacles */
+#rotating-obstacle-left {
+  width: 3%;
+  height: 30%;
+  bottom: 5%;
+  left: 20%;
+  animation: rotateObstacle 2s linear infinite;
+}
+#rotating-obstacle-right {
+  width: 3%;
+  height: 30%;
+  bottom: 5%;
+  right: 20%;
+  animation: rotateObstacle 2s linear infinite reverse;
+}
+#rotating-obstacle-top {
+  width: 1%;
+  height: 20%;
+  top: 0%;
+  left: 40%;
+  animation: rotateObstacle 4s linear infinite reverse;
+}
+/* Game border to prevent the user from moving cursor outside the viewport */
+#border-left {
+  height: 100%;
+  width: 1%;
+  top: 0%;
+}
+#border-right {
+  height: 100%;
+  width: 1%;
+  right: 0%;
+  top: 0%;
+}
+#border-top {
+  height: 1%;
+  width: 100%;
+  top: 0%;
+}
+#border-bottom {
+  height: 1%;
+  width: 100%;
+  bottom: 0%;
+}
+
+/* Food visuals. Simple bright green colour signifies that the user needs to collect them */
+.food {
+  position: absolute;
+  background-color: lime;
+  width: 30px;
+  height: 30px;
+  margin: 30px;
+  border-radius: 50%;
+}
+/* Food locations */
+#food1 {
+  right: 10%;
+  top: 3%;
+}
+#food2 {
+  top: 30%;
+  left: 10%;
+}
+#food3 {
+  left: 45%;
+  bottom: 25%;
+}
+#food4 {
+  left: 10%;
+  top: 3%;
+}
+#food5 {
+  left: 60%;
+  top: 45%;
+}
+#food6 {
+  left: 35%;
+  top: 40%;
+}
+
+/* Mine stem backgrounds connecting them to the ground for added detail */
+.mine-stem {
+  position: absolute;
+  bottom: 0;
+  width: 0.8vw;
+  height: 45vh;
+  background: #444;
+  z-index: 0;
+  transform: translateX(-50%);
+  opacity: 0.5;
+}
+#stem1 {
+  left: 19%;
+}
+#stem2 {
+  left: 9%;
+}
+#stem3 {
+  right: 18%;
+}
+#stem4 {
+  right: 8%;
+}
+
+/* Cursor trail particle. A basic cyan square that rotates and fades out, 
+like bubbles or water streams being created by the fish */
+.trail {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 0%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+  animation: fadeOut 1s ease-out forwards;
+}
+
+/* Each animation for obstacles, either translating or rotating. 
+from-to keyframes were enough as the obstacles only moved between 2 locations*/
 @keyframes rotateObstacle {
   from {
     transform: rotate(0deg);
@@ -41,6 +331,19 @@ h1 {
     transform: translateX(0px);
   }
   to {
-    transform: translateX(500px);
+    transform: translateX(40vw);
+  }
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(-20vh);
+  }
+}
+/* Rotation and fade out effect for the cursor trail, rather than them disappearing immediately after a set time */
+@keyframes fadeOut {
+  to {
+    opacity: 0%;
+    rotate: 360deg;
   }
 }
