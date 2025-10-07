@@ -1,12 +1,21 @@
 const turtle = document.getElementById("turtle");
+const shark = document.getElementById("shark");
 const totalFrames = 10;
+const sharkFrames = 6;
 const bgBorder = document.getElementById("bg-border");
 const bgContainer = document.getElementById("bg-container");
+const turtleTopView = document.getElementById("turtle-top");
+const turtleTopFrames = 6;
+let turtleTopFrame = 1;
+let turtleTopAnimationInterval;
 let currentFrame = 1;
+let sharkFrame = 1;
 let isScrolling = false;
 let animationInterval;
+let sharkAnimationInterval;
 let verticalbg = true;
 let turtleeating = false;
+let isSideView = true;
 
 const bg = document.getElementById("bg-container");
 const mainText = document.getElementById("main-text");
@@ -17,10 +26,32 @@ for (let i = 1; i <= totalFrames; i++) {
   img.src = `TurtleSide${i}.png`;
 }
 
+for (let i = 1; i <= sharkFrames; i++) {
+  const img = new Image();
+  img.src = `shark${i}.png`;
+}
+
+for (let i = 1; i <= turtleTopFrames; i++) {
+  const img = new Image();
+  img.src = `TurtleTopView${i}.png`;
+}
+
 function nextFrame() {
   currentFrame++;
   if (currentFrame > totalFrames) currentFrame = 1;
   turtle.src = `TurtleSide${currentFrame}.png`;
+}
+
+function sharkNextFrame() {
+  sharkFrame++;
+  if (sharkFrame > sharkFrames) sharkFrame = 1;
+  shark.src = `shark${sharkFrame}.png`;
+}
+
+function turtleTopNextFrame() {
+  turtleTopFrame++;
+  if (turtleTopFrame > turtleTopFrames) turtleTopFrame = 1;
+  turtleTopView.src = `TurtleTopView${turtleTopFrame}.png`;
 }
 
 function textPosition() {
@@ -66,10 +97,10 @@ function turtleRotate() {
   } else if (
     verticalbg === false &&
     window.scrollY > window.innerHeight * 11.9 &&
-    window.scrollY < window.innerHeight * 15
+    window.scrollY < window.innerHeight * 18
   ) {
     // Only translateY when in this scroll range
-    turtle.style.transform = "translateY(-50vh)";
+    turtle.style.transform = "translateY(20vh)";
   } else {
     turtle.style.transform = "rotate(0deg)";
   }
@@ -78,7 +109,9 @@ function turtleRotate() {
 window.addEventListener("scroll", () => {
   if (!isScrolling) {
     isScrolling = true;
-    animationInterval = setInterval(nextFrame, 150); // swim speed
+    animationInterval = setInterval(nextFrame, 150);
+    sharkAnimationInterval = setInterval(sharkNextFrame, 200); // swim speed
+    turtleTopAnimationInterval = setInterval(turtleTopNextFrame, 150);
   }
 
   // Repeating bg
@@ -118,7 +151,7 @@ window.addEventListener("scroll", () => {
     turtleeating = true;
   } else if (
     window.scrollY > window.innerHeight * 11.9 &&
-    window.scrollY < window.innerHeight * 15
+    window.scrollY < window.innerHeight * 18
   ) {
     bgBorder.style.width = "80vw";
     bgBorder.style.height = "60vh";
@@ -127,6 +160,19 @@ window.addEventListener("scroll", () => {
     mainText.style.fontSize = "3rem";
     verticalbg = false;
     turtleeating = false;
+    if (!isSideView) {
+      TransitionView();
+      isSideView = !isSideView;
+    }
+  } else if (
+    window.scrollY > window.innerHeight * 17.9 &&
+    window.scrollY < window.innerHeight * 21
+  ) {
+    if (isSideView) {
+      TransitionView();
+      isSideView = false;
+    }
+    mainText.textContent = "This is a top down view";
   } else {
     bgBorder.style.width = "50vw";
     bgBorder.style.height = "80vh";
@@ -135,8 +181,12 @@ window.addEventListener("scroll", () => {
     verticalbg = true;
     turtleeating = false;
     turtle.style.transform = "rotate(0deg)";
+    if (!isSideView) {
+      TransitionView();
+      isSideView = !isSideView;
+    }
   }
-
+  sharkUpdate();
   textPosition();
   bgposition();
   turtleRotate();
@@ -145,8 +195,42 @@ window.addEventListener("scroll", () => {
   window.scrollTimeout = setTimeout(() => {
     isScrolling = false;
     clearInterval(animationInterval);
+    clearInterval(sharkAnimationInterval);
+    clearInterval(turtleTopAnimationInterval);
   }, 150);
 });
+
+function sharkUpdate() {
+  if (
+    window.scrollY > window.innerHeight * 11.9 &&
+    window.scrollY < window.innerHeight * 18
+  ) {
+    shark.style.display = "block";
+    const start = window.innerHeight * 11.9;
+    const end = window.innerHeight * 17;
+    const progress = (window.scrollY - start) / (end - start);
+    shark.style.position = "absolute";
+    shark.style.left = `calc(${progress * 100}% - ${shark.width}px)`;
+    shark.style.top = "50%";
+    shark.style.transform = "translateY(-50%)";
+  } else {
+    shark.style.display = "none";
+  }
+}
+
+let sideView = true;
+function TransitionView() {
+  sideView = !sideView;
+  if (sideView == true) {
+    bgContainer.style.backgroundImage = 'url("Background1.gif")';
+    turtle.style.display = "block";
+    turtleTopView.style.display = "none";
+  } else {
+    bgContainer.style.backgroundImage = 'url("Background2.png")';
+    turtle.style.display = "none";
+    turtleTopView.style.display = "block";
+  }
+}
 
 window.addEventListener("resize", () => {
   bgposition();
