@@ -6,6 +6,7 @@ const bgBorder = document.getElementById("bg-border");
 const bgContainer = document.getElementById("bg-container");
 const turtleTopView = document.getElementById("turtle-top");
 const turtleTopFrames = 6;
+
 let turtleTopFrame = 1;
 let turtleTopAnimationInterval;
 let currentFrame = 1;
@@ -222,13 +223,24 @@ let sideView = true;
 function TransitionView() {
   sideView = !sideView;
   if (sideView == true) {
+    bgContainer.style.opacity = "1";
     bgContainer.style.backgroundImage = 'url("Background1.gif")';
-    turtle.style.display = "block";
-    turtleTopView.style.display = "none";
+    turtle.style.opacity = "1";
+    turtleTopView.style.opacity = "0";
+    // Optionally, hide after fade out
+    setTimeout(() => {
+      turtle.style.display = "block";
+      turtleTopView.style.display = "none";
+    }, 500);
   } else {
+    bgContainer.style.opacity = "1";
     bgContainer.style.backgroundImage = 'url("Background2.png")';
-    turtle.style.display = "none";
-    turtleTopView.style.display = "block";
+    turtle.style.opacity = "0";
+    turtleTopView.style.opacity = "1";
+    setTimeout(() => {
+      turtle.style.display = "none";
+      turtleTopView.style.display = "block";
+    }, 500);
   }
 }
 

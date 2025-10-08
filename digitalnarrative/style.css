@@ -28,6 +28,7 @@ body {
   background-size: auto 100%;
   z-index: -1;
   pointer-events: none;
+  transition: opacity 0.5s;
 }
 
 #main-text {
@@ -39,4 +40,20 @@ body {
 #turtle {
   position: static;
   transition: 0.3s;
+  width: 150px;
+}
+#turtle-top {
+  display: none;
+  position: static;
+  transition: 0.3s;
+  width: 150px;
+}
+#shark {
+  display: none;
+  position: fixed;
+  left: 20%;
+}
+
+#turtle, #turtle-top {
+  transition: opacity 0.5s;
 }
