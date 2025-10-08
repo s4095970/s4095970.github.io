@@ -1,5 +1,5 @@
 body {
-  height: 2000vh;
+  height: 3000vh;
   width: 100vw;
   overflow-x: hidden;
 }
@@ -19,41 +19,55 @@ body {
 
 #bg-container {
   position: absolute;
+  background-repeat: repeat;
   top: 0;
   left: 0;
   width: 80vw;
   height: 80vh;
   background-image: url("Background1.gif");
-  background-repeat: repeat-x;
-  background-size: auto 100%;
+  background-size: 100%;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+#bg-containerB {
+  position: absolute;
+  display: none;
+  background-repeat: repeat;
+  top: 0;
+  left: 0;
+  width: 80vw;
+  height: 80vh;
+  background-image: url("Background2.png");
+  background-size: 100%;
   z-index: -1;
   pointer-events: none;
   transition: opacity 0.5s;
 }
 
 #main-text {
-    position: fixed;
-    font-size: 5rem;
-    top: 40%;
-    transition: 0.5s;
+  position: fixed;
+  font-size: 5rem;
+  top: 40%;
+  transition: 0.5s;
 }
 #turtle {
   position: static;
-  transition: 0.3s;
-  width: 150px;
+  transition: transform 0.3s, opacity 0.5s;
+  width: 10vw;
 }
 #turtle-top {
   display: none;
   position: static;
-  transition: 0.3s;
-  width: 150px;
+  transition: transform 0.3s, opacity 0.5s;
+  width: 10vw;
+  transform: scaleY(-1);
 }
 #shark {
+  width: 15vw;
   display: none;
   position: fixed;
   left: 20%;
-}
-
-#turtle, #turtle-top {
   transition: opacity 0.5s;
 }

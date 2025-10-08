@@ -4,6 +4,7 @@ const totalFrames = 10;
 const sharkFrames = 6;
 const bgBorder = document.getElementById("bg-border");
 const bgContainer = document.getElementById("bg-container");
+const bgContainerB = document.getElementById("bg-containerB");
 const turtleTopView = document.getElementById("turtle-top");
 const turtleTopFrames = 6;
 
@@ -16,9 +17,9 @@ let animationInterval;
 let sharkAnimationInterval;
 let verticalbg = true;
 let turtleeating = false;
-let isSideView = true;
+let isSideView = true; // transition guard
+let sideView = true; // actual view state
 
-const bg = document.getElementById("bg-container");
 const mainText = document.getElementById("main-text");
 
 // preload
@@ -26,12 +27,10 @@ for (let i = 1; i <= totalFrames; i++) {
   const img = new Image();
   img.src = `TurtleSide${i}.png`;
 }
-
 for (let i = 1; i <= sharkFrames; i++) {
   const img = new Image();
   img.src = `shark${i}.png`;
 }
-
 for (let i = 1; i <= turtleTopFrames; i++) {
   const img = new Image();
   img.src = `TurtleTopView${i}.png`;
@@ -42,13 +41,11 @@ function nextFrame() {
   if (currentFrame > totalFrames) currentFrame = 1;
   turtle.src = `TurtleSide${currentFrame}.png`;
 }
-
 function sharkNextFrame() {
   sharkFrame++;
   if (sharkFrame > sharkFrames) sharkFrame = 1;
   shark.src = `shark${sharkFrame}.png`;
 }
-
 function turtleTopNextFrame() {
   turtleTopFrame++;
   if (turtleTopFrame > turtleTopFrames) turtleTopFrame = 1;
@@ -64,7 +61,7 @@ function textPosition() {
     mainText.style.left = `${midpoint}px`;
     mainText.style.top = "40%";
     mainText.style.transform = "translate(-50%, -50%)";
-  } else if (verticalbg == false) {
+  } else {
     const rect = bgBorder.getBoundingClientRect();
     const midpoint = rect.left + rect.width / 2;
     mainText.style.left = `${midpoint}px`;
@@ -78,46 +75,104 @@ function bgposition() {
     bgBorder.style.top = "50%";
     bgBorder.style.left = "5%";
     bgBorder.style.transform = "translate(0%, -50%)";
-    bg.style.backgroundPositionY = "0px";
-    bg.style.top = "0";
-    bg.style.bottom = "auto";
-  } else if (verticalbg == false) {
+    bgContainer.style.backgroundPositionY = "0px";
+    bgContainer.style.top = "0";
+    bgContainer.style.bottom = "auto";
+  } else {
     bgBorder.style.left = "50%";
     bgBorder.style.top = "10%";
     bgBorder.style.transform = "translate(-50%, 0)";
-    bg.style.top = "auto";
-    bg.style.bottom = "0";
-    bg.style.backgroundPositionY = "100%";
+    bgContainer.style.top = "auto";
+    bgContainer.style.bottom = "0";
+    bgContainer.style.backgroundPositionY = "100%";
   }
 }
 
 function turtleRotate() {
   if (turtleeating == true) {
-    // Combine rotate and translateY if both are needed
     turtle.style.transform = "rotate(30deg)";
   } else if (
     verticalbg === false &&
     window.scrollY > window.innerHeight * 11.9 &&
     window.scrollY < window.innerHeight * 18
   ) {
-    // Only translateY when in this scroll range
     turtle.style.transform = "translateY(20vh)";
   } else {
     turtle.style.transform = "rotate(0deg)";
   }
 }
 
+function sharkUpdate() {
+  if (
+    window.scrollY > window.innerHeight * 11.9 &&
+    window.scrollY < window.innerHeight * 18
+  ) {
+    shark.style.display = "block";
+    const start = window.innerHeight * 11.9;
+    const end = window.innerHeight * 17;
+    const progress = (window.scrollY - start) / (end - start);
+    shark.style.position = "absolute";
+    shark.style.left = `calc(${progress * 100}% - ${shark.width}px)`;
+    shark.style.top = "50%";
+    shark.style.transform = "translateY(-50%)";
+  } else {
+    shark.style.display = "none";
+  }
+}
+
+function TransitionView() {
+  sideView = !sideView;
+
+  // Fade out turtles and backgrounds together
+  shark.style.opacity = "0";
+  turtle.style.opacity = "0";
+  turtleTopView.style.opacity = "0";
+  bgContainer.style.opacity = "0";
+  bgContainerB.style.opacity = "0";
+
+  setTimeout(() => {
+    shark.style.opacity = "1";
+    if (sideView) {
+      bgContainer.style.display = "block";
+      bgContainerB.style.display = "none";
+      turtle.style.display = "block";
+      turtleTopView.style.display = "none";
+      // Fade in both at the same time, but after display is set
+      bgContainer.style.opacity = "1";
+      requestAnimationFrame(() => {
+        turtle.style.opacity = "1";
+      });
+    } else {
+      bgContainer.style.display = "none";
+      bgContainerB.style.display = "block";
+      turtle.style.display = "none";
+      turtleTopView.style.display = "block";
+      bgContainerB.style.opacity = "1";
+      requestAnimationFrame(() => {
+        turtleTopView.style.opacity = "1";
+      });
+    }
+  }, 500);
+}
+
 window.addEventListener("scroll", () => {
+  if (sideView) {
+    // Background 1: scroll horizontally
+    bgContainer.style.backgroundPosition = `-${window.scrollY}px 0px`;
+  } else if (!sideView) {
+    // Background 2: scroll vertically
+    bgContainerB.style.backgroundPosition = `0px -${window.scrollY}px`;
+  }
+
+  // Animation intervals
   if (!isScrolling) {
     isScrolling = true;
     animationInterval = setInterval(nextFrame, 150);
-    sharkAnimationInterval = setInterval(sharkNextFrame, 200); // swim speed
+    sharkAnimationInterval = setInterval(sharkNextFrame, 200);
     turtleTopAnimationInterval = setInterval(turtleTopNextFrame, 150);
   }
 
-  // Repeating bg
-  bg.style.backgroundPositionX = `-${window.scrollY}px`;
-
+  // Scroll-triggered states
   if (
     window.scrollY > window.innerHeight * 2.9 &&
     window.scrollY < window.innerHeight * 6
@@ -163,11 +218,11 @@ window.addEventListener("scroll", () => {
     turtleeating = false;
     if (!isSideView) {
       TransitionView();
-      isSideView = !isSideView;
+      isSideView = true;
     }
   } else if (
     window.scrollY > window.innerHeight * 17.9 &&
-    window.scrollY < window.innerHeight * 21
+    window.scrollY < window.innerHeight * 30
   ) {
     if (isSideView) {
       TransitionView();
@@ -184,9 +239,10 @@ window.addEventListener("scroll", () => {
     turtle.style.transform = "rotate(0deg)";
     if (!isSideView) {
       TransitionView();
-      isSideView = !isSideView;
+      isSideView = true;
     }
   }
+
   sharkUpdate();
   textPosition();
   bgposition();
@@ -200,49 +256,6 @@ window.addEventListener("scroll", () => {
     clearInterval(turtleTopAnimationInterval);
   }, 150);
 });
-
-function sharkUpdate() {
-  if (
-    window.scrollY > window.innerHeight * 11.9 &&
-    window.scrollY < window.innerHeight * 18
-  ) {
-    shark.style.display = "block";
-    const start = window.innerHeight * 11.9;
-    const end = window.innerHeight * 17;
-    const progress = (window.scrollY - start) / (end - start);
-    shark.style.position = "absolute";
-    shark.style.left = `calc(${progress * 100}% - ${shark.width}px)`;
-    shark.style.top = "50%";
-    shark.style.transform = "translateY(-50%)";
-  } else {
-    shark.style.display = "none";
-  }
-}
-
-let sideView = true;
-function TransitionView() {
-  sideView = !sideView;
-  if (sideView == true) {
-    bgContainer.style.opacity = "1";
-    bgContainer.style.backgroundImage = 'url("Background1.gif")';
-    turtle.style.opacity = "1";
-    turtleTopView.style.opacity = "0";
-    // Optionally, hide after fade out
-    setTimeout(() => {
-      turtle.style.display = "block";
-      turtleTopView.style.display = "none";
-    }, 500);
-  } else {
-    bgContainer.style.opacity = "1";
-    bgContainer.style.backgroundImage = 'url("Background2.png")';
-    turtle.style.opacity = "0";
-    turtleTopView.style.opacity = "1";
-    setTimeout(() => {
-      turtle.style.display = "none";
-      turtleTopView.style.display = "block";
-    }, 500);
-  }
-}
 
 window.addEventListener("resize", () => {
   bgposition();
