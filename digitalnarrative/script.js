@@ -19,6 +19,7 @@ let verticalbg = true;
 let turtleeating = false;
 let isSideView = true; // transition guard
 let sideView = true; // actual view state
+let turtlesAdded = false;
 
 const mainText = document.getElementById("main-text");
 
@@ -120,6 +121,49 @@ function sharkUpdate() {
   }
 }
 
+function addTurtleCrowd() {
+  removeTurtlesFromGrid();
+
+  for (let i = 0; i < 3; i++) {
+    const newTurtle = turtleTopView.cloneNode(true);
+    newTurtle.id = "";
+    newTurtle.classList.add("grid-turtle");
+    newTurtle.style.display = "block";
+    newTurtle.style.opacity = "0"; // Start hidden
+    const randomY = Math.floor(Math.random() * 31) - 15;
+    newTurtle.style.transform = `translateY(${randomY}vh) scaleY(-1)`;
+    newTurtle.dataset.frame = Math.floor(Math.random() * turtleTopFrames) + 1;
+    newTurtle.src = `TurtleTopView${newTurtle.dataset.frame}.png`;
+    bgBorder.appendChild(newTurtle);
+    // Fade in after adding
+    requestAnimationFrame(() => {
+      newTurtle.style.transition = "opacity 1s";
+      newTurtle.style.opacity = "1";
+    });
+  }
+  turtlesAdded = true;
+}
+
+function animateTurtleCrowd() {
+  const turtles = bgBorder.querySelectorAll(".grid-turtle");
+  turtles.forEach((turtle) => {
+    // Randomly decide whether to advance the frame this tick
+    if (Math.random() > 0.5) {
+      let frame = parseInt(turtle.dataset.frame, 10);
+      frame = frame >= turtleTopFrames ? 1 : frame + 1;
+      turtle.dataset.frame = frame;
+      turtle.src = `TurtleTopView${frame}.png`;
+    }
+    // Otherwise, keep the current frame for this tick
+  });
+}
+
+function removeTurtlesFromGrid() {
+  const turtles = bgBorder.querySelectorAll(".grid-turtle");
+  turtles.forEach((t) => t.remove());
+  turtlesAdded = false;
+}
+
 function TransitionView() {
   sideView = !sideView;
 
@@ -138,8 +182,8 @@ function TransitionView() {
       turtle.style.display = "block";
       turtleTopView.style.display = "none";
       // Fade in both at the same time, but after display is set
-      bgContainer.style.opacity = "1";
       requestAnimationFrame(() => {
+        bgContainer.style.opacity = "1";
         turtle.style.opacity = "1";
       });
     } else {
@@ -147,8 +191,8 @@ function TransitionView() {
       bgContainerB.style.display = "block";
       turtle.style.display = "none";
       turtleTopView.style.display = "block";
-      bgContainerB.style.opacity = "1";
       requestAnimationFrame(() => {
+        bgContainerB.style.opacity = "1";
         turtleTopView.style.opacity = "1";
       });
     }
@@ -169,7 +213,10 @@ window.addEventListener("scroll", () => {
     isScrolling = true;
     animationInterval = setInterval(nextFrame, 150);
     sharkAnimationInterval = setInterval(sharkNextFrame, 200);
-    turtleTopAnimationInterval = setInterval(turtleTopNextFrame, 150);
+    turtleTopAnimationInterval = setInterval(() => {
+      turtleTopNextFrame();
+      animateTurtleCrowd(); // Animate all grid turtles
+    }, 150);
   }
 
   // Scroll-triggered states
@@ -209,6 +256,7 @@ window.addEventListener("scroll", () => {
     window.scrollY > window.innerHeight * 11.9 &&
     window.scrollY < window.innerHeight * 18
   ) {
+    removeTurtlesFromGrid();
     bgBorder.style.width = "80vw";
     bgBorder.style.height = "60vh";
     mainText.textContent =
@@ -229,7 +277,9 @@ window.addEventListener("scroll", () => {
       isSideView = false;
     }
     mainText.textContent = "This is a top down view";
+    if (!turtlesAdded) addTurtleCrowd();
   } else {
+    removeTurtlesFromGrid();
     bgBorder.style.width = "50vw";
     bgBorder.style.height = "80vh";
     mainText.textContent = "80 Years";
@@ -242,7 +292,6 @@ window.addEventListener("scroll", () => {
       isSideView = true;
     }
   }
-
   sharkUpdate();
   textPosition();
   bgposition();

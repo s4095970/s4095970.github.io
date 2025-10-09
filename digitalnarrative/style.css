@@ -71,3 +71,8 @@ body {
   left: 20%;
   transition: opacity 0.5s;
 }
+
+.grid-turtle {
+  width: 10vw; /* or whatever size you want */
+  transition: opacity 0.5s;
+}
