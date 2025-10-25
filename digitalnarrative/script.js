@@ -21,7 +21,36 @@ let isSideView = true; // transition guard
 let sideView = true; // actual view state
 let turtlesAdded = false;
 
+let desaturationStartY = 17.9;
+let desaturationEndY = 30;
+
 const mainText = document.getElementById("main-text");
+
+// animate/desaturate helpers for bgContainerB
+function setBgBGrayscale(value) {
+  value = Math.max(0, Math.min(1, value)); // clamp 0..1
+  bgContainerB.style.filter = `grayscale(${value})`;
+}
+
+let desaturationMin = 0;
+let desaturationMax = 0.5;
+
+function updateBgBDesaturation() {
+  const start = window.innerHeight * desaturationStartY;
+  const end = window.innerHeight * desaturationEndY;
+
+  if (window.scrollY <= start) {
+    setBgBGrayscale(desaturationMin);
+  } else if (window.scrollY >= end) {
+    setBgBGrayscale(desaturationMax);
+  } else {
+    const progress = (window.scrollY - start) / (end - start); // 0..1
+    // interpolate between min and max grayscale
+    const value =
+      desaturationMin + (desaturationMax - desaturationMin) * progress;
+    setBgBGrayscale(value);
+  }
+}
 
 // preload
 for (let i = 1; i <= totalFrames; i++) {
@@ -200,6 +229,7 @@ function TransitionView() {
 }
 
 window.addEventListener("scroll", () => {
+  updateBgBDesaturation();
   if (sideView) {
     // Background 1: scroll horizontally
     bgContainer.style.backgroundPosition = `-${window.scrollY}px 0px`;
@@ -269,15 +299,32 @@ window.addEventListener("scroll", () => {
       isSideView = true;
     }
   } else if (
-    window.scrollY > window.innerHeight * 17.9 &&
-    window.scrollY < window.innerHeight * 30
+    window.scrollY > window.innerHeight * desaturationStartY &&
+    window.scrollY < window.innerHeight * desaturationEndY
   ) {
+    bgBorder.style.width = "80vw";
+    bgBorder.style.height = "60vh";
     if (isSideView) {
       TransitionView();
       isSideView = false;
     }
-    mainText.textContent = "This is a top down view";
+    mainText.style.fontSize = "3rem";
+    mainText.textContent =
+      "Sea turtles can travel thousands of miles for foods and nesting.";
     if (!turtlesAdded) addTurtleCrowd();
+  } else if (
+    window.scrollY > window.innerHeight * 29.9 &&
+    window.scrollY < window.innerHeight * 35
+  ) {
+    bgBorder.style.width = "50vw";
+    bgBorder.style.height = "80vh";
+    if (!isSideView) {
+      TransitionView();
+      isSideView = true;
+      removeTurtlesFromGrid();
+    }
+    mainText.style.fontSize = "3rem";
+    mainText.textContent = "beep";
   } else {
     removeTurtlesFromGrid();
     bgBorder.style.width = "50vw";
@@ -292,6 +339,7 @@ window.addEventListener("scroll", () => {
       isSideView = true;
     }
   }
+
   sharkUpdate();
   textPosition();
   bgposition();

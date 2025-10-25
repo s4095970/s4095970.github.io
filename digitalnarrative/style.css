@@ -1,5 +1,5 @@
 body {
-  height: 3000vh;
+  height: 5000vh;
   width: 100vw;
   overflow-x: hidden;
 }
@@ -43,7 +43,8 @@ body {
   background-size: 100%;
   z-index: -1;
   pointer-events: none;
-  transition: opacity 0.5s;
+  will-change: filter, opacity;
+  transition: filter 300ms linear, opacity 500ms linear;
 }
 
 #main-text {
